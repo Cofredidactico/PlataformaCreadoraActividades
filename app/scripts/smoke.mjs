@@ -89,6 +89,13 @@ await page.getByRole('button', { name: /Agregar/ }).click();
 await page.locator('.editor-canvas svg').click({ position: { x: 30, y: 30 } });
 const dots2 = await page.locator('.dot-handle').count();
 log('Editor: agregar punto funciona', dots2 === dots + 1, `(${dots} -> ${dots2})`);
+
+// deshacer: el punto agregado se revierte con Ctrl+Z
+await page.keyboard.press('Control+z');
+await page.waitForFunction((n) => document.querySelectorAll('.dot-handle').length === n, dots, { timeout: 3000 }).catch(() => {});
+const dots3 = await page.locator('.dot-handle').count();
+log('Deshacer (Ctrl+Z) revierte el cambio', dots3 === dots, `(${dots2} -> ${dots3})`);
+
 await page.getByRole('button', { name: /Todos los módulos/ }).click();
 
 // --- Rompecabezas (con imagen) ---
@@ -100,9 +107,63 @@ await page.waitForSelector('.validation', { timeout: 10000 });
 checksBad = await page.locator('.check.bad').count();
 const hasImg = await page.locator('.editor-canvas image, .editor-canvas svg').count();
 log('Rompecabezas genera piezas', checksBad === 0 && hasImg > 0, `(fallos:${checksBad})`);
+await page.getByRole('button', { name: /Todos los módulos/ }).click();
+
+// --- Sombras (con imagen) ---
+await page.locator('.card', { hasText: 'Sombras' }).click();
+await page.locator('input[type=file]').setInputFiles({ name: 'star.png', mimeType: 'image/png', buffer });
+await page.waitForSelector('.thumb img', { timeout: 5000 });
+await page.getByRole('button', { name: /Generar actividad/ }).click();
+await page.waitForSelector('.validation', { timeout: 15000 });
+checksBad = await page.locator('.check.bad').count();
+log('Sombras: una sola correcta + distractores', checksBad === 0, `(fallos:${checksBad})`);
+await page.getByRole('button', { name: /Todos los módulos/ }).click();
+
+// --- Colorear por Números (con imagen) ---
+await page.locator('.card', { hasText: 'Colorear por Números' }).click();
+await page.locator('input[type=file]').setInputFiles({ name: 'star.png', mimeType: 'image/png', buffer });
+await page.waitForSelector('.thumb img', { timeout: 5000 });
+await page.getByRole('button', { name: /Generar actividad/ }).click();
+await page.waitForSelector('.validation', { timeout: 20000 });
+checksBad = await page.locator('.check.bad').count();
+const cbnImg = await page.locator('.editor-canvas image').count();
+log('Colorear por Números genera line-art + leyenda', checksBad === 0 && cbnImg > 0, `(fallos:${checksBad})`);
+await page.getByRole('button', { name: /Todos los módulos/ }).click();
+
+// --- Laberintos (sin imagen, solucion unica) ---
+await page.locator('.card', { hasText: 'Laberintos' }).click();
+await page.getByRole('button', { name: /Generar actividad/ }).click();
+await page.waitForSelector('.validation', { timeout: 10000 });
+checksBad = await page.locator('.check.bad').count();
+const uniqueTxt = await page.locator('.check', { hasText: 'única' }).textContent();
+log('Laberintos: solución única garantizada', checksBad === 0 && /árbol|un solo camino/i.test(uniqueTxt || ''), `(fallos:${checksBad})`);
+await page.getByRole('button', { name: /Todos los módulos/ }).click();
+
+// --- Trazos (con imagen de ejemplo) ---
+await page.locator('.card', { hasText: 'Trazos' }).click();
+await page.locator('.sample', { hasText: 'Estrella' }).click();
+await page.waitForSelector('.thumb img', { timeout: 5000 });
+await page.getByRole('button', { name: /Generar actividad/ }).click();
+await page.waitForSelector('.validation', { timeout: 15000 });
+checksBad = await page.locator('.check.bad').count();
+svgOk = await page.locator('.editor-canvas svg, .preview-wrap svg').count();
+log('Trazos genera figura punteada desde ejemplo', checksBad === 0 && svgOk > 0, `(fallos:${checksBad})`);
+
+// activar marco de cuadernillo y verificar vista "Hoja"
+await page.locator('#ws').check();
+await page.waitForFunction(() => !!document.querySelector('.preview-wrap.sheet'), null, { timeout: 3000 }).catch(() => {});
+const sheetShown = await page.locator('.preview-wrap.sheet svg').count();
+const pngWithSheet = await page.getByRole('button', { name: 'PNG 300dpi' }).isEnabled();
+log('Marco de cuadernillo se aplica y exporta', sheetShown > 0 && pngWithSheet, `(hoja:${sheetShown})`);
+
+// guardar proyecto y verificar que aparece en la galeria
+await page.getByRole('button', { name: /Guardar proyecto/ }).click();
+await page.getByRole('button', { name: /Todos los módulos/ }).click();
+const recent = await page.locator('.recent-card').count();
+log('Guardar/abrir proyectos funciona', recent >= 1, `(proyectos:${recent})`);
 
 // tema oscuro
-await page.locator('.icon-btn').click();
+await page.locator('.icon-btn').first().click();
 const themeDark = await page.evaluate(() => document.documentElement.getAttribute('data-theme'));
 log('Modo oscuro conmuta', themeDark === 'dark');
 

@@ -250,6 +250,61 @@ input, textarea, select { font-family: inherit; }
   .canvas-area { padding: 16px; }
 }
 
+/* samples */
+.samples { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.sample {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 8px 4px; border-radius: var(--radius-sm); background: var(--bg-soft);
+  transition: background 0.15s ease, transform 0.12s ease;
+}
+.sample:hover { background: var(--border); transform: translateY(-2px); }
+.sample img { width: 40px; height: 40px; object-fit: contain; }
+.sample span { font-size: 10.5px; font-weight: 600; color: var(--text-soft); }
+
+/* recientes / proyectos */
+.recent { max-width: 1200px; margin: 0 auto; padding: 10px 20px 0; }
+.section-title { font-size: 18px; font-weight: 800; margin-bottom: 12px; }
+.recent-row { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; }
+.recent-card {
+  position: relative; flex-shrink: 0; width: 150px; background: var(--bg-elev);
+  border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden;
+  cursor: pointer; transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+.recent-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.recent-thumb { height: 96px; background: #fff; display: grid; place-items: center; overflow: hidden; }
+.recent-thumb svg { max-width: 100%; max-height: 100%; }
+.recent-meta { padding: 8px 10px; }
+.recent-meta strong { font-size: 12.5px; display: block; }
+.recent-meta small { font-size: 10.5px; color: var(--text-soft); }
+.recent-del { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.55); color: #fff; width: 22px; height: 22px; border-radius: 7px; font-size: 11px; }
+
+/* barra de herramientas del lienzo */
+.canvas-tools {
+  display: flex; gap: 14px; align-items: center; margin-bottom: 14px;
+  background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 8px 12px; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 5;
+}
+.zoom-val { font-size: 12.5px; font-weight: 700; min-width: 44px; text-align: center; }
+.zoom-wrap { transition: transform 0.15s ease; width: 100%; display: flex; justify-content: center; }
+
+/* panel del marco de cuadernillo */
+.ws-panel { background: var(--bg-soft); border-radius: var(--radius-sm); padding: 12px 12px 2px; }
+.ws-panel .field input[type='file'] { font-size: 12px; }
+
+/* toggle segmentado Editar/Hoja */
+.tool-group.seg { border-right: none; gap: 0; background: var(--bg-soft); border-radius: 9px; padding: 3px; }
+.seg-btn { padding: 6px 14px; border-radius: 7px; font-weight: 700; font-size: 13px; color: var(--text-soft); }
+.seg-btn.active { background: var(--brand-grad); color: #fff; }
+.preview-wrap.sheet svg { width: 720px; max-width: 100%; }
+
+/* toast */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--brand-grad); color: #fff; padding: 12px 22px; border-radius: 30px;
+  font-weight: 700; font-size: 14px; box-shadow: var(--shadow-lg); z-index: 200;
+  animation: rise 0.3s ease both;
+}
+
 /* scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }

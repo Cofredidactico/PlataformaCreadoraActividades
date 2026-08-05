@@ -39,19 +39,28 @@ exportás en **PNG 300 DPI · PDF A4 · SVG** (fondo transparente cuando aplica)
 Cada actividad pasa una **validación automática** y solo se puede exportar si es
 correcta.
 
-### Módulos listos
+### Módulos listos (8)
 
 | Módulo | Técnica |
 |---|---|
 | ✏️ **Unir Puntos** | Detección de contorno + vectorización + distribución de N puntos por **longitud de arco** (100% geométrico, sin IA) |
+| ✍️ **Trazos** | Contorno convertido en figura punteada para repasar (grafomotricidad) |
 | 🔤 **Sopa de Letras** | Colocación con validación de que todas las palabras entren |
+| 🌀 **Laberintos** | Laberinto perfecto (árbol): **solución única garantizada matemáticamente** |
+| 🎨 **Colorear por Números** | Cuantización de color (k-means) → line-art, zonas numeradas y leyenda |
+| 🌑 **Sombras** | Silueta del objeto + distractores, con solución |
 | 🧩 **Rompecabezas** | Corte en grilla con lengüetas interlazadas o recto |
 | 🃏 **Memotest** | Mazo de cartas en pares; la imagen es el reverso |
 
+### Funciones del editor y la plataforma
+
+Deshacer/rehacer (Ctrl+Z / Ctrl+Y) · zoom y ajuste · **guardar y abrir proyectos**
+(en el navegador) · biblioteca de **imágenes de ejemplo** · **hoja de cuadernillo**
+(marco A4 con título, instrucciones, campos Nombre/Fecha, logo y pie de marca).
+
 ### Hoja de ruta (arquitectura ya preparada)
 
-Encontrá las Diferencias · Buscá y Encontrá · Laberintos · Colorear por Números ·
-Unir Imagen con Palabra · Sombras · Secuencias · Trazos.
+Encontrá las Diferencias · Buscá y Encontrá · Unir Imagen con Palabra · Secuencias.
 
 ---
 
